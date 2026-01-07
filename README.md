@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?style=flat-square&logo=dotnet)
+![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?style=flat-square&logo=dotnet)
 ![SQLite](https://img.shields.io/badge/SQLite-07405E?style=flat-square&logo=sqlite)
 ![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 
@@ -67,11 +67,11 @@
 ## 🛠️ 技术栈
 
 ### 后端
-- **框架**: ASP.NET Core 9.0 Web API
-- **ORM**: Entity Framework Core 9.0
+- **框架**: ASP.NET Core 8.0 Web API
+- **ORM**: Entity Framework Core 8.0
 - **数据库**: SQLite（开发）/ SQL Server（生产）
 - **认证**: JWT Bearer Token
-- **文档**: Swagger/OpenAPI
+- **文档**: Swagger/Swashbuckle
 
 ### 通信协议
 - **MQTT**: 物联网设备通信（MQTTnet 5.0）
@@ -121,7 +121,7 @@ HotelManagement/
 ### 前提条件
 
 确保已安装以下环境：
-- [.NET 9.0 SDK](https://dotnet.microsoft.com/download)
+- [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 - [Git](https://git-scm.com/)
 - 代码编辑器（推荐 [VS Code](https://code.visualstudio.com/) 或 [Visual Studio 2022](https://visualstudio.microsoft.com/)）
 
@@ -156,16 +156,15 @@ dotnet run
 
 ```
 info: Microsoft.Hosting.Lifetime[14]
-      Now listening on: https://localhost:7001
-info: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:5000
+      Now listening on: http://localhost:5091
 ```
+
+> **注意**：端口号可能会不同，请以实际输出为准。
 
 #### 5. 访问Swagger文档
 
-在浏览器打开：
-- **HTTPS**: https://localhost:7001/swagger
-- **HTTP**: http://localhost:5000/swagger
+在浏览器打开 Swagger API 文档（端口号以实际启动为准）：
+- **示例**: http://localhost:5091/swagger
 
 ### 开发模式（热重载）
 

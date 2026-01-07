@@ -1,0 +1,7 @@
+{
+  "configProperties": {
+    "System.Runtime.TieredCompilation": true,
+    "System.Runtime.TieredPGO": true,
+    "DOTNET_EnableWriteXorExecute": "0"
+  }
+}
