@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HotelManagement.API.Data;
 using HotelManagement.API.Models;
+using HotelManagement.API.DTOs;
 
 namespace HotelManagement.API.Controllers;
 
@@ -71,10 +72,10 @@ public class BookingsController : ControllerBase
     /// 创建新订单
     /// </summary>
     [HttpPost]
-    public async Task<ActionResult<Booking>> CreateBooking(Booking booking)
+    public async Task<ActionResult<Booking>> CreateBooking(CreateBookingDto bookingDto)
     {
         // 检查房间是否可用
-        var room = await _context.Rooms.FindAsync(booking.RoomId);
+        var room = await _context.Rooms.FindAsync(bookingDto.RoomId);
         if (room == null)
         {
             return NotFound(new { message = "房间不存在" });
@@ -85,20 +86,33 @@ public class BookingsController : ControllerBase
             return BadRequest(new { message = "房间不可用" });
         }
 
-        // 检查时间段是否有冲突
+        // 检查时间段是否有冲突（排除已取消和已退房的订单）
         var hasConflict = await _context.Bookings
-            .AnyAsync(b => b.RoomId == booking.RoomId 
+            .AnyAsync(b => b.RoomId == bookingDto.RoomId 
                 && b.Status != "Cancelled"
-                && b.CheckInTime < booking.CheckOutTime 
-                && b.CheckOutTime > booking.CheckInTime);
+                && b.Status != "CheckedOut"
+                && b.CheckInTime < bookingDto.CheckOutTime 
+                && b.CheckOutTime > bookingDto.CheckInTime);
 
         if (hasConflict)
         {
             return BadRequest(new { message = "该时间段房间已被预订" });
         }
 
-        booking.CreatedAt = DateTime.UtcNow;
-        booking.Status = "Pending";
+        var booking = new Booking
+        {
+            RoomId = bookingDto.RoomId,
+            GuestName = bookingDto.GuestName,
+            GuestPhone = bookingDto.GuestPhone,
+            GuestIdCard = bookingDto.GuestIdCard,
+            CheckInTime = bookingDto.CheckInTime,
+            CheckOutTime = bookingDto.CheckOutTime,
+            TotalPrice = bookingDto.TotalPrice,
+            PaidAmount = bookingDto.PaidAmount,
+            Notes = bookingDto.Notes,
+            CreatedAt = DateTime.UtcNow,
+            Status = "Pending"
+        };
         
         _context.Bookings.Add(booking);
         

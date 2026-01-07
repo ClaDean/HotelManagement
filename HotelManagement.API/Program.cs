@@ -7,7 +7,16 @@ using HotelManagement.API.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // 忽略循环引用
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        // 允许尾随逗号
+        options.JsonSerializerOptions.AllowTrailingCommas = true;
+        // 属性名不区分大小写
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    });
 
 // 配置数据库（使用SQLite便于开发，生产环境可切换到SQL Server）
 builder.Services.AddDbContext<HotelDbContext>(options =>
